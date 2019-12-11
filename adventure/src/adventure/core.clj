@@ -222,7 +222,7 @@
 (defn open-mirror [state]
   (let [age (get-in state [:adventurer :age])
         gender (get-in state [:adventurer :gender])
-        child (gender {:male :boy, :female :girl})
+        child (gender {:male "boy", :female "girl"})
         new-state (assoc-in state [:map :guestroom :dir :south] :hidden)]
     (do (println (str "You pry off the mirror, but looking closely you realize with a jump that a 5 year old " child " is looking back at " age "-year-old you. Creepy. You put the mirror down. You see a dusty opening."))
         (assoc-in new-state [:room-items :mirror] "The cracked mirror is leaning against the wall, next to the hidden opening."))))
@@ -292,7 +292,7 @@
 
 (defn intro []
   (println "Welcome! This is the final project for CS 296-25 FA19 at UIUC by Maxwell Jong."
-           "\nI hope you enjoy this little puzzle text-adventure game!")
+           "\nI hope you enjoy this little puzzle text-adventure game! Game solution can be found at end of source code.")
   (instructions nil))
 
 (defn check-tick [state]
@@ -314,3 +314,8 @@
        ;(println (get-in local-state [:adventurer :tick]))
        (check-tick local-state)
        (recur (respond pl (canonicalize command)))))))
+
+;; Solution:
+; In kitchen, take mice -> In living-room, use mice -> In basement, use cooked-mice
+; -> In basement, take crowbar -> In guestroom on second floor -> use crowbar -> in hidden space, take key
+; -> In entrance, use key
