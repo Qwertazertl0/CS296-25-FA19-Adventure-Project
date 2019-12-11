@@ -1,36 +1,10 @@
-# adventure
+# Adventure Project
 
-FIXME: description
+Text adventure game written in Clojure for CS296-25 FA19 final project.
 
-## Installation
-
-Download from http://example.com/FIXME.
 
 ## Usage
 
-FIXME: explanation
+Run lein uberjar in adventure folder, then call 'java -jar' on jar file. E.g.
 
-    $ java -jar adventure-0.1.0-standalone.jar [args]
-
-## Options
-
-FIXME: listing of options this app accepts.
-
-## Examples
-
-...
-
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2019 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+    $ java -jar adventure-0.1.0-standalone.jar

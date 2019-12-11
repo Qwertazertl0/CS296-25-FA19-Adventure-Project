@@ -5,46 +5,57 @@
 ;; Game data and flavor text
 (def init-map
   {:entrance {:desc "\nThe locked :door behind you, you peer into the dimly-lit interior. The walls are peeling; the air is heavy. Spiderwebs line the dusty staircase. There are heavy wooden doors on both sides and a dark corridor in front of you."
+              :desc2 "\nYou peer into the dimly-lit interior. The walls are peeling; the air is heavy. Spiderwebs line the dusty staircase. There are heavy wooden doors on both sides and a dark corridor in front of you."
               :title "in the entrance way"
               :dir {:north :kitchen, :up :hallway, :west :study, :east :workshop}
               :contents #{:door}}
    :study {:desc "\nAs the door slowly creaks open, you find yourself in an old study. Shelves full of moldy books line the walls. There is a desk with a :letter on it."
+           :desc2 "\nShelves full of moldy books line the walls. There is a desk with a :letter on it."
            :title "in the old study"
            :dir {:east :entrance}
            :contents #{:letter}}
    :workshop {:desc "\nThere are wooden tables and tools scattered all around the room. It must be a workshop. A :crumpled-paper by your feet catches your eye."
+              :desc2 "\nThere are wooden tables and tools scattered all around the room. It must be a workshop. A :crumpled-paper by your feet catches your eye."
               :title "in the workshop"
               :dir {:west :entrance}
               :contents #{:crumpled-paper}}
    :kitchen {:desc "\nThe hall opens up into a decrepit but recognizable kitchen. A flickering light is cast from the living room to your right. Nearby, fragile-looking stairs lead into darkness. Your skin crawls upon seeing the dead :mice on the dining table."
+             :desc2 "\nA flickering light is cast from the living room to your right. Nearby, fragile-looking stairs lead into darkness."
              :title "in the kitchen area"
              :dir {:south :entrance, :east :living-room, :down :basement}
              :contents #{:mice}}
    :living-room {:desc "\nThe flickering light seems to be coming from the fire in the dusty :fireplace. It's open flames quiver slowly and sadly."
+                 :desc2 "\nThe flickering light seems to be coming from the fire in the dusty :fireplace. It's open flames quiver slowly and sadly."
                  :title "in the living room"
                  :dir {:west :kitchen, :down :basement}
                  :contents #{:fireplace}}
    :basement {:desc "\nAs you descend the shaky stairs, you hear a weak snarling. When you reach the bottom, your eyes--trained to the darkness by now--lock on to two red-hot, glowing eyes. As you tense up, you realize it is just a very thin :dog chained to a stake. It is quietly gnawing on what looks to be a :crowbar."
+              :desc2 "\nAt the bottom of the stairs, your eyes--trained to the darkness by now--look helplessly at the thin :dog chained to a stake."
               :title "in the basement with the dog"
               :dir {:up :kitchen}
               :contents #{:dog :crowbar}}
    :guestroom {:desc "\nA small empty bed sits in the corner. A dresser and wardrobe rest against the southern wall. A full-length, but cracked :mirror is hung alongside them."
+               :desc2 "\nA small empty bed sits in the corner. A dresser and wardrobe rest against the southern wall where the full-length, but cracked :mirror is."
                :title "in the room with the cracked mirror"
                :dir {:east :hallway}
                :contents #{:mirror}}
    :hidden {:desc "\nYou crawl through the tight opening. You find yourself in an unbelievably stuffy small closet space. As you grope around, you bump a small, cold piece of metal which falls to the floor with startling thunk. Could that be a :key?"
+            :desc2 "\nIt just seems to be a very small hideaway."
             :title "in the hidden space"
             :dir {:north :guestroom}
             :contents #{:key}}
    :master {:desc "\nThe king size bed in the middle of the room indicates this is probably the master bedroom. You don't notice anything strange. Until you spot the :skeleton tucked away under the covers. Its skull looks like it would crumble into dust at the slightest touch."
+            :desc2 "\nThe king size bed in the middle of the room indicates this is probably the master bedroom."
             :title "in the master bedroom"
             :dir {:west :hallway}
             :contents #{:skeleton}}
    :bathroom {:desc "\nIt's a bathroom. You could go right now... but maybe you should hold it in. The :toilet lid is down; who knows what's in there..."
+              :desc2 "\nIt's a bathroom. It's a little dirty, but..."
               :title "in the bathroom"
               :dir {:south :hallway}
               :contents #{:toilet}}
    :hallway {:desc "\nAt the top of the stairs is another hallway. The walls are faded and reek of mildew. Two rooms are open on the sides, and another one is closed at the end of the hallway."
+             :desc2 "\nThe walls are faded and reek of mildew. Two rooms are open on the sides, and another one is closed at the end of the hallway opposite the stairs."
              :title "standing in the hallway"
              :dir {:down :entrance, :east :master, :west :guestroom, :north :bathroom}
              :contents #{}}})
@@ -168,7 +179,7 @@
 
 (defn look-room [state]
   (let [loc (get-in state [:adventurer :location])
-        desc (get-in state [:map loc :desc])]
+        desc (get-in state [:map loc :desc2])]
     (do (println desc)
         state)))
 
@@ -203,9 +214,10 @@
         (update-in state1 [:adventurer :inventory] conj :cooked-mice))))
 
 (defn feed-dog [state]
-  (let [state1 (assoc-in state [:adventurer :cleared-dog] :true)]
+  (let [state1 (assoc-in state [:adventurer :cleared-dog] :true)
+        state2 (update-in state1 [:adventurer :inventory] disj :cooked-mice)]
     (do (println "You offer the poor dog the mice. The thin, old canine drops the crowbar and picks up the mice, sauntering over to a corner.")
-        (assoc-in state1 [:room-items :dog] "The dog is lying down over in the corner. It looks very sad."))))
+        (assoc-in state2 [:room-items :dog] "The dog is lying down over in the corner. It looks very sad."))))
 
 (defn open-mirror [state]
   (let [age (get-in state [:adventurer :age])
